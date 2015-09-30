@@ -1,0 +1,21 @@
+<?php
+
+$_PLUGIN_CONFIG['LANG'] = array(
+	'NAME'=>'EU Cookie Consent',
+	'DESCRIPTION'=>'Simple script to control the EU Cookie Law consent.',
+	'ENABLE_PLUGIN'=>'Enable plugin',
+	'CHOOSE_THEME'=>'Choose theme',
+	'DARK_TOP'=>'Dark Top',
+	'DARK_BOTTOM'=>'Dark Bottom',
+	'DARK_FLOATING'=>'Dark Floating',
+	'LIGHT_TOP'=>'Light Top',
+	'LIGHT_BOTTOM'=>'Light Bottom',
+	'LIGHT_FLOATING'=>'Light Floating',
+	'HEADLINE_TEXT'=>'Headline text',
+	'ACCEPT_BUTTON_TEXT'=>'Accept button text',
+	'READ_MORE_BUTTON_TEXT'=>'Read more button text',
+	'YOUR_COOKIE_POLICY'=>'Your cookie policy',
+	'HAVE_COOKIE_POLICY'=>'If you already have a cookie policy, link to it here.'
+);
+
+?>

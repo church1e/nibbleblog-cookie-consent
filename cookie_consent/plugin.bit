@@ -1,0 +1,98 @@
+<?php
+
+// =====================================================================
+// PLUGIN INFO
+// =====================================================================
+$_PLUGIN_CONFIG['DATA'] = array(
+   'author'=>'schlumpfuk',
+   'version'=>'1.0.2',
+   'url'=>'http://churchill.ddns.me.uk/page/nibbleblog/'
+);
+
+// =====================================================================
+// PLUGIN CLASS
+// =====================================================================
+class PLUGIN_COOKIE_CONSENT extends Plugin
+{
+   function __construct()
+   {
+      parent::__construct();
+
+      $this->fields = array(
+         'enable' => true,
+         'message' => 'This website uses cookies to ensure you get the best experience on our website',
+         'dismiss' => 'Got it!',
+         'learnMore' => 'More info',
+         'link' => 'https://en.wikipedia.org/wiki/HTTP_cookie',
+         'theme' => 'dark-floating'
+      );
+   }
+
+   public function dashboard_config()
+   {
+      global $settings;
+      global $Language;
+      $pluginPath = HTML_PATH_PLUGINS.'cookie_consent/';
+
+      $html  = Html::div_open();
+
+      // Cookie Consent themes
+      $themeOptions = array('dark-bottom' => $Language->get('DARK_BOTTOM'),'dark-floating' => $Language->get('DARK_FLOATING'),'dark-top' => $Language->get('DARK_TOP'),'light-bottom' => $Language->get('LIGHT_BOTTOM'),'light-floating' => $Language->get('LIGHT_FLOATING'),'light-top' => $Language->get('LIGHT_TOP'));
+
+      $html .= Html::label(array('for'=>'theme','content'=>$Language->get('CHOOSE_THEME')));
+      $html .= Html::select(array('name'=>'theme'), $themeOptions, $this->database('theme'));
+
+
+      // Cookie Message to display
+      $html .= Html::label(array('for'=>'message','content'=>$Language->get('HEADLINE_TEXT')));
+      $html .= Html::textarea(array('name'=>'message','rows'=>3,'content'=>$this->database('message')) );
+
+
+      // Accept button text
+      $html .= Html::label(array('for'=>'dismiss','content'=>$Language->get('ACCEPT_BUTTON_TEXT')));
+      $html .= Html::input(array('name'=>'dismiss', 'type'=>'text', 'value'=>$this->database('dismiss')) );
+
+
+      // Read More button text
+      $html .= Html::label(array('for'=>'learnMore','content'=>$Language->get('READ_MORE_BUTTON_TEXT')));
+      $html .= Html::input(array('name'=>'learnMore', 'type'=>'text', 'value'=>$this->database('learnMore')) );
+
+
+      // Link to your cookie policy
+      $html .= Html::label(array('for'=>'link','content'=>$Language->get('YOUR_COOKIE_POLICY')));
+      $html .= Html::input(array('name'=>'link', 'type'=>'text', 'value'=>$this->database('link')) );
+      $html .= Html::p( array('style'=>'color: #777;font-style: italic;font-size: 0.85em;margin-top: -13px;', 'content'=>$Language->get('HAVE_COOKIE_POLICY')) );
+
+
+      // Link to more info about EU Cookie Law (UK based site)
+      $html .= Html::link(array('href'=>'http://ico.org.uk/for_organisations/privacy_and_electronic_communications/the_guide/cookies', 'content'=>'Click here to read more about EU Cookie Law','target'=>'_blank'));
+
+
+      $html .= Html::div_close();
+
+      return $html;
+   }
+
+   public function blog_head()
+   {
+      global $settings;
+      global $Language;
+
+      $pluginPath = HTML_PATH_PLUGINS.'cookie_consent/';
+
+      if($this->database('enable')) {
+         $html  = '<!--// Begin EU Cookie Law Consent //-->'.PHP_EOL;
+         $html .= '<link rel="stylesheet" type="text/css" src="' .$pluginPath.'css/'.$this->database('theme').'.css">'.PHP_EOL;
+         $html .= '<script type="text/javascript">'.PHP_EOL;
+         $html .= 'window.cookieconsent_options = {"message":"'.$this->database('message').'","dismiss":"'.$this->database('dismiss').'","learnMore":"'.$this->database('learnMore').'","link":"'.$this->database('link').'","theme":"'.$this->database('theme').'"};'.PHP_EOL;
+         $html .= '</script>'.PHP_EOL;
+         $html .= '<script type="text/javascript" src="' .$pluginPath. 'js/cookie_consent.min.js"></script>'.PHP_EOL;
+
+         $html .= '<!--// End EU Cookie Law Consent //-->'.PHP_EOL;
+      }
+
+      return $html;
+   }
+
+}
+?>
